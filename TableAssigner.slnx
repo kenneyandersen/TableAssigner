@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="TableAssigner.Locations/TableAssigner.Locations.csproj" />
   <Project Path="TableAssigner.TestData/TableAssigner.TestData.csproj" />
+  <Project Path="TableAssigner.UI/TableAssigner.UI.csproj" />
+  <Project Path="TableAssigner.Visualizer.Console/TableAssigner.Visualizer.Console.csproj" />
   <Project Path="TableAssigner/TableAssigner.csproj" />
 </Solution>
