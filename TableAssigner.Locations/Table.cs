@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace TableAssigner.Locations
 {
@@ -14,6 +11,8 @@ namespace TableAssigner.Locations
             Rotation = Rotations.Rot_0;
             Position = new(0, 0);
             Seats = [];
+            Width = 2;
+            Length = 6;
             GenerateSeats();
         }
 

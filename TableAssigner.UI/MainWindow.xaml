@@ -19,29 +19,92 @@
         </Grid.RowDefinitions>
         <Label Content="{Binding Name}"/>
         <!--<ScrollViewer Grid.Row="1">-->
-            <TabControl Grid.Row="1" ItemsSource="{Binding Locations}">
+        <TabControl Grid.Row="1" ItemsSource="{Binding Locations}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Name}"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
-                <TabControl.ContentTemplate>
-                    <DataTemplate>
-                        <Grid MinHeight="200">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Label Content="{Binding Name}"/>
-                            <ContentPresenter Grid.Row="1" Content="{Binding Canvas}"/>
-                        </Grid>
-                    </DataTemplate>
-                </TabControl.ContentTemplate>
-            </TabControl>
-            <!--<ItemsControl Background="Red" ItemsSource="{Binding Locations}">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid MinHeight="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="250"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <ContentPresenter Grid.RowSpan="2" Content="{Binding Canvas}"/>
+                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                            <Label>Location Name</Label>
+                            <TextBox Text="{Binding Name}"/>
+                            <ListView ItemsSource="{Binding Tables}" SelectedItem="{Binding SelectedTable}" MinHeight="150">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding TableName}">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding TableName}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Width" DisplayMemberBinding="{Binding Width}">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Width}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Length" DisplayMemberBinding="{Binding Length}">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Length}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="X" DisplayMemberBinding="{Binding X}">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding X}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="X" DisplayMemberBinding="{Binding Y}">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Y}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <StackPanel Orientation="Vertical" DataContext="{Binding SelectedTable}">
+                                <Label>Table Name</Label>
+                                <TextBox Text="{Binding TableName}"/>
+                                <Label>Width</Label>
+                                <TextBox Text="{Binding Width}"/>
+                                <Label>Length</Label>
+                                <TextBox Text="{Binding Length}"/>
+                                <Label>Position</Label>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Width="50" Text="{Binding X}"/>
+                                    <TextBox Width="50" Text="{Binding Y}"/>
+                                </StackPanel>
+                                <Label>X</Label>
+                                <!--<StackPanel Orientation="Horizontal">
+                                    <Button Width="50" Command="{Binding ModifyYCommand}" CommandParameter="false">-</Button>
+                                    <Button Width="50" Command="{Binding ModifyYCommand}" CommandParameter="1">+</Button>
+                                </StackPanel>-->
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+        <!--<ItemsControl Background="Red" ItemsSource="{Binding Locations}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />

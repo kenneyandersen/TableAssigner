@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Numerics;
-using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using TableAssigner.Locations;
-using TableAssigner.UI;
 
 public class CanvasTool
 {
     private readonly Canvas _canvas;
     private readonly double _unitSize;
+
+    public event EventHandler<Table> TableSelected;
 
     public CanvasTool(Canvas canvas, double unitSize = 20)
     {
@@ -80,7 +80,7 @@ public class CanvasTool
             Stroke = Brushes.Black,
             StrokeThickness = 3,
             Fill = null,
-            Tag = CanvasTags.Location
+            Tag = location
         };
 
         Canvas.SetLeft(rect, x);
@@ -144,13 +144,14 @@ public class CanvasTool
             Fill = Brushes.LightGray,
             Stroke = Brushes.Black,
             StrokeThickness = 2,
-            Tag = CanvasTags.Table,
+            Tag = table,
             RenderTransform = new RotateTransform(
                 angleDeg,
                 widthPx / 2,
                 lengthPx / 2
             )
         };
+        rect.MouseLeftButtonDown += (s, e) => TableSelected?.Invoke(s, table);
 
         Canvas.SetLeft(rect, posX);
         Canvas.SetTop(rect, posY);
@@ -194,7 +195,7 @@ public class CanvasTool
             Width = 8,
             Height = 8,
             Fill = Brushes.Blue,
-            Tag = CanvasTags.Seat
+            Tag = seat
         };
 
         Canvas.SetLeft(dot, rotated.X - 4);
@@ -204,24 +205,24 @@ public class CanvasTool
     }
 
 
-    public void ClearByTag(string tag)
-    {
-        // Collect first to avoid modifying the collection while iterating
-        var toRemove = _canvas.Children
-            .OfType<FrameworkElement>()
-            .Where(e => e.Tag is string s && s == tag)
-            .ToList();
+    //public void ClearByTag(string tag)
+    //{
+    //    // Collect first to avoid modifying the collection while iterating
+    //    var toRemove = _canvas.Children
+    //        .OfType<FrameworkElement>()
+    //        .Where(e => e.Tag is string s && s == tag)
+    //        .ToList();
 
-        foreach (var element in toRemove)
-            _canvas.Children.Remove(element);
-    }
+    //    foreach (var element in toRemove)
+    //        _canvas.Children.Remove(element);
+    //}
 
 
-    public void ClearTables()
-    {
-        ClearByTag(CanvasTags.Table);
-        ClearByTag(CanvasTags.Seat);
-    }
+    //public void ClearTables()
+    //{
+    //    ClearByTag(CanvasTags.Table);
+    //    ClearByTag(CanvasTags.Seat);
+    //}
 
     // ----------------------------------------------------------
     // Compute rotation angle from normalized direction vector
