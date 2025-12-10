@@ -9,7 +9,7 @@ namespace TableAssigner.Locations
     {
         public static readonly Vector2 Right = Vector2.UnitX;
         public static readonly Vector2 Down = Vector2.UnitY;
-        public static readonly Vector2 Left = Right.Rotate(180);
-        public static readonly Vector2 Up = Down.Rotate(180);
+        public static readonly Vector2 Left = new(-1, 0);
+        public static readonly Vector2 Up = new(0, -1);
     }
 }

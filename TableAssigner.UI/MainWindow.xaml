@@ -15,11 +15,26 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label>fa</Label>
-        <Grid Grid.Row="1" Background="Red">
-            <Canvas x:Name="LayoutCanvas"
-                Background="#EEE">
-            </Canvas>
-        </Grid>
+        <ScrollViewer Grid.Row="1"
+            HorizontalScrollBarVisibility="Disabled"
+              VerticalScrollBarVisibility="Disabled"
+              PanningMode="None"
+             Background="Blue">
+            <Grid>
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="ZoomTransform" ScaleX="1" ScaleY="1" />
+                        <TranslateTransform x:Name="PanTransform" X="0" Y="0" />
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Canvas x:Name="LayoutCanvas"
+                        Background="#EEE"
+                        MouseWheel="Canvas_MouseWheel"
+                        MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                        MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
+                        MouseMove="Canvas_MouseMove"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
     
 </Window>

@@ -35,16 +35,80 @@ public class CanvasTool
             DrawSeat(table, seat);
     }
 
+    public void DrawLocation(Location location)
+    {
+        if (location.Tables.Count == 0)
+            return;
+
+        float minX = float.MaxValue;
+        float minY = float.MaxValue;
+        float maxX = float.MinValue;
+        float maxY = float.MinValue;
+
+        // Calculate extents in seat units
+        foreach (var table in location.Tables)
+        {
+            float left = table.Position.X;
+            float top = table.Position.Y;
+            float right = table.Position.X + table.Width;
+            float bottom = table.Position.Y + table.Length;
+
+            if (left < minX) minX = left;
+            if (top < minY) minY = top;
+            if (right > maxX) maxX = right;
+            if (bottom > maxY) maxY = bottom;
+        }
+
+        // Add padding (in seat units)
+        float pad = 0.5f;
+        minX -= pad;
+        minY -= pad;
+        maxX += pad;
+        maxY += pad;
+
+        // Convert seat-units → pixels
+        double x = minX * _unitSize;
+        double y = minY * _unitSize;
+        double width = (maxX - minX) * _unitSize;
+        double height = (maxY - minY) * _unitSize;
+
+        // Draw bounding box
+        var rect = new Rectangle
+        {
+            Width = width,
+            Height = height,
+            Stroke = Brushes.Black,
+            StrokeThickness = 3,
+            Fill = null,
+            Tag = CanvasTags.Location
+        };
+
+        Canvas.SetLeft(rect, x);
+        Canvas.SetTop(rect, y);
+        _canvas.Children.Add(rect);
+
+        // Draw all tables inside
+        foreach (var table in location.Tables)
+            DrawTable(table);
+    }
+
+
+
     // ----------------------------------------------------------
     //  Draw the table rectangle with rotation
     // ----------------------------------------------------------
     private void DrawTableBody(Table table)
     {
+        // Convert table size from seat-units → pixels
         double widthPx = table.Width * _unitSize;
         double lengthPx = table.Length * _unitSize;
 
-        // compute rotation angle from normalized vector
-        double angleDeg = GetAngleFromVector(table.Rotation);
+        // Convert table position from seat-units → pixels
+        double posX = table.Position.X * _unitSize;
+        double posY = table.Position.Y * _unitSize;
+
+        // Rotation from normalized direction vector
+        double angleDeg = Math.Atan2(table.Rotation.Y, table.Rotation.X) * (180.0 / Math.PI);
 
         var rect = new Rectangle
         {
@@ -53,32 +117,50 @@ public class CanvasTool
             Fill = Brushes.LightGray,
             Stroke = Brushes.Black,
             StrokeThickness = 2,
-            RenderTransform = new RotateTransform(angleDeg, widthPx / 2, lengthPx / 2),
-            Tag = CanvasTags.Table
+            Tag = CanvasTags.Table,
+            RenderTransform = new RotateTransform(
+                angleDeg,
+                widthPx / 2,
+                lengthPx / 2
+            )
         };
 
-        Canvas.SetLeft(rect, table.Position.X);
-        Canvas.SetTop(rect, table.Position.Y);
+        Canvas.SetLeft(rect, posX);
+        Canvas.SetTop(rect, posY);
 
         _canvas.Children.Add(rect);
     }
+
 
     // ----------------------------------------------------------
     //  Draw seat with full rotation support
     // ----------------------------------------------------------
     private void DrawSeat(Table table, Seat seat)
     {
-        // local seat coordinate
         Vector2 local = seat.TableCoordinate;
 
-        // convert to pixel space BEFORE rotation
-        Point unrotated = new Point(
-            table.Position.X + local.X * _unitSize,
-            table.Position.Y + local.Y * _unitSize
-        );
+        // Base position in seat-units
+        double seatX = table.Position.X + local.X;
+        double seatY = table.Position.Y + local.Y;
 
-        // compute rotated point
-        Point p = RotatePointAroundTableCenter(table, unrotated);
+        // Determine seat centering based on direction
+        Vector2 dir = seat.Direction;
+
+        // Horizontal centering for vertical seats (Top/Bottom)
+        if (dir.X == 0)
+            seatX += 0.5;
+
+        //// Vertical centering for horizontal seats (Left/Right)
+        if (dir.Y == 0)
+            seatY += 0.5;
+
+        // Convert to pixels
+        double unrotatedX = seatX * _unitSize;
+        double unrotatedY = seatY * _unitSize;
+        var unrotated = new Point(unrotatedX, unrotatedY);
+
+        // Apply table rotation around table center
+        Point rotated = RotatePointAroundTableCenter(table, unrotated);
 
         var dot = new Ellipse
         {
@@ -88,11 +170,12 @@ public class CanvasTool
             Tag = CanvasTags.Seat
         };
 
-        Canvas.SetLeft(dot, p.X - 4);
-        Canvas.SetTop(dot, p.Y - 4);
+        Canvas.SetLeft(dot, rotated.X - 4);
+        Canvas.SetTop(dot, rotated.Y - 4);
 
         _canvas.Children.Add(dot);
     }
+
 
     public void ClearByTag(string tag)
     {
