@@ -26,64 +26,64 @@ namespace TableAssigner.UI
         {
             InitializeComponent();
 
-            _canvasTool = new CanvasTool(LayoutCanvas, unitSize: 20);
+            //_canvasTool = new CanvasTool(LayoutCanvas, unitSize: 20);
 
-            DrawDemo();
+            //DrawDemo();
         }
 
-        private void DrawDemo()
-        {
-            // Example Location (you probably already have your own)
+        //private void DrawDemo()
+        //{
+        //    // Example Location (you probably already have your own)
 
-            var venue = TestDataCreator.CreateVenue();
-            var table = venue.Locations.First().Tables.First();
+        //    var venue = TestDataCreator.CreateVenue();
+        //    var table = venue.Locations.First().Tables.First();
 
-            // Seats are generated automatically by your Table class
-            //_canvasTool.DrawTables(venue.Locations.First().Tables);
-            _canvasTool.DrawLocation(venue.Locations.First());
-        }
+        //    // Seats are generated automatically by your Table class
+        //    //_canvasTool.DrawTables(venue.Locations.First().Tables);
+        //    _canvasTool.DrawLocation(venue.Locations.First());
+        //}
 
-        private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            double zoomFactor = e.Delta > 0 ? 1.1 : 0.9;
+        //private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    double zoomFactor = e.Delta > 0 ? 1.1 : 0.9;
 
-            // Current mouse position relative to canvas
-            var mousePos = e.GetPosition(LayoutCanvas);
+        //    // Current mouse position relative to canvas
+        //    var mousePos = e.GetPosition(LayoutCanvas);
 
-            // Apply zoom
-            ZoomTransform.ScaleX *= zoomFactor;
-            ZoomTransform.ScaleY *= zoomFactor;
+        //    // Apply zoom
+        //    ZoomTransform.ScaleX *= zoomFactor;
+        //    ZoomTransform.ScaleY *= zoomFactor;
 
-            // Adjust pan so zoom stays centered on mouse cursor
-            PanTransform.X = mousePos.X - zoomFactor * (mousePos.X - PanTransform.X);
-            PanTransform.Y = mousePos.Y - zoomFactor * (mousePos.Y - PanTransform.Y);
-        }
-        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _isPanning = true;
-            _panStart = e.GetPosition(this);
-            LayoutCanvas.CaptureMouse();
-        }
+        //    // Adjust pan so zoom stays centered on mouse cursor
+        //    PanTransform.X = mousePos.X - zoomFactor * (mousePos.X - PanTransform.X);
+        //    PanTransform.Y = mousePos.Y - zoomFactor * (mousePos.Y - PanTransform.Y);
+        //}
+        //private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    _isPanning = true;
+        //    _panStart = e.GetPosition(this);
+        //    LayoutCanvas.CaptureMouse();
+        //}
 
-        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            _isPanning = false;
-            LayoutCanvas.ReleaseMouseCapture();
-        }
+        //private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        //{
+        //    _isPanning = false;
+        //    LayoutCanvas.ReleaseMouseCapture();
+        //}
 
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_isPanning)
-            {
-                var currentPos = e.GetPosition(this);
-                var delta = currentPos - _panStart;
+        //private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (_isPanning)
+        //    {
+        //        var currentPos = e.GetPosition(this);
+        //        var delta = currentPos - _panStart;
 
-                PanTransform.X += delta.X;
-                PanTransform.Y += delta.Y;
+        //        PanTransform.X += delta.X;
+        //        PanTransform.Y += delta.Y;
 
-                _panStart = currentPos;
-            }
-        }
+        //        _panStart = currentPos;
+        //    }
+        //}
 
 
     }

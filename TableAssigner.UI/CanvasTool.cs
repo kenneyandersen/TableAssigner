@@ -45,7 +45,7 @@ public class CanvasTool
         float maxX = float.MinValue;
         float maxY = float.MinValue;
 
-        // Calculate extents in seat units
+        // Compute bounding in seat units
         foreach (var table in location.Tables)
         {
             float left = table.Position.X;
@@ -59,14 +59,14 @@ public class CanvasTool
             if (bottom > maxY) maxY = bottom;
         }
 
-        // Add padding (in seat units)
+        // Padding
         float pad = 0.5f;
         minX -= pad;
         minY -= pad;
         maxX += pad;
         maxY += pad;
 
-        // Convert seat-units → pixels
+        // Convert to pixel space
         double x = minX * _unitSize;
         double y = minY * _unitSize;
         double width = (maxX - minX) * _unitSize;
@@ -87,7 +87,34 @@ public class CanvasTool
         Canvas.SetTop(rect, y);
         _canvas.Children.Add(rect);
 
-        // Draw all tables inside
+        //// ----------------------------------------
+        //// ADD LOCATION NAME LABEL (Upper-right)
+        //// ----------------------------------------
+        //var label = new TextBlock
+        //{
+        //    Text = location.Name,
+        //    FontSize = 16,
+        //    FontWeight = FontWeights.Bold,
+        //    Foreground = Brushes.Black,
+        //    Tag = CanvasTags.Location
+        //};
+
+        //// margin above the border
+        //double labelOffsetY = -22;
+        //double labelOffsetX = -5;  // slight inward margin from the right edge
+
+        //Canvas.SetLeft(label, x + width + labelOffsetX - label.ActualWidth);
+        //Canvas.SetTop(label, y + labelOffsetY);
+
+        //// WPF quirk: we must force measurement so ActualWidth works
+        //label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+        //// Now reposition the label correctly with actual width
+        //Canvas.SetLeft(label, x + width - label.ActualWidth + labelOffsetX);
+
+        //_canvas.Children.Add(label);
+
+        // Draw tables inside this location
         foreach (var table in location.Tables)
             DrawTable(table);
     }

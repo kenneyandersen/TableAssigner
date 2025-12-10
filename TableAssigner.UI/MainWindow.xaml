@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:TableAssigner.UI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:VenueModel/>
+    </Window.DataContext>
     <Grid Background="Green">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -14,27 +17,54 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label>fa</Label>
-        <ScrollViewer Grid.Row="1"
-            HorizontalScrollBarVisibility="Disabled"
-              VerticalScrollBarVisibility="Disabled"
-              PanningMode="None"
-             Background="Blue">
-            <Grid>
-                <Grid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform x:Name="ZoomTransform" ScaleX="1" ScaleY="1" />
-                        <TranslateTransform x:Name="PanTransform" X="0" Y="0" />
-                    </TransformGroup>
-                </Grid.RenderTransform>
-                <Canvas x:Name="LayoutCanvas"
-                        Background="#EEE"
-                        MouseWheel="Canvas_MouseWheel"
-                        MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
-                        MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
-                        MouseMove="Canvas_MouseMove"/>
-            </Grid>
-        </ScrollViewer>
+        <Label Content="{Binding Name}"/>
+        <!--<ScrollViewer Grid.Row="1">-->
+            <TabControl Grid.Row="1" ItemsSource="{Binding Locations}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Name}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Grid MinHeight="200">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="{Binding Name}"/>
+                            <ContentPresenter Grid.Row="1" Content="{Binding Canvas}"/>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+            <!--<ItemsControl Background="Red" ItemsSource="{Binding Locations}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid MinHeight="200">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="{Binding Name}"/>
+                            <ContentPresenter Grid.Row="1" Content="{Binding Canvas}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>-->
+        <!--</ScrollViewer>-->
     </Grid>
     
 </Window>
