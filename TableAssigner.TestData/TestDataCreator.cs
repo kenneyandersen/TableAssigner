@@ -13,10 +13,10 @@ namespace TableAssigner.TestData
                 var location = new Location($"Floor {i + 1}", venue);
                 venue.Locations.Add(location);
 
-                var tableCount = rand.Next(5, 10);
-                for (int x = 1; x < tableCount; x++)
+                var tableCount = 1; // rand.Next(5, 10);
+                for (int x = 1; x <= tableCount; x++)
                 {
-                    var table = new Table($"Table {x + 1}", location)
+                    var table = new Table($"Table {x}", location)
                     {
                         Width = 2,
                         Length = 10,

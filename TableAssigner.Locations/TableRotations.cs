@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TableAssigner.Locations
 {
-    internal class Rotations
+    public class TableRotations
     {
         public static readonly Vector2 Rot_0 = Vector2.UnitX;
         public static readonly Vector2 Rot_90 = Rot_0.Rotate(90);

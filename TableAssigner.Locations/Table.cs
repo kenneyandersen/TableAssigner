@@ -8,7 +8,7 @@ namespace TableAssigner.Locations
         {
             this.TableName = tableName;
             this.Location = location;
-            Rotation = Rotations.Rot_0;
+            Rotation = TableRotations.Rot_0;
             Position = new(0, 0);
             Seats = [];
             Width = 2;
